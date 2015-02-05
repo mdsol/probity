@@ -27,6 +27,10 @@ Probity should only be included in your middleware stack when running in test/de
 config.middleware.use(Probity::ResponseValidatorMiddleware)
 ```
 
+Now, run your test scripts! If your app produces malformed responses, Probity will turn a passing test into a failing one by raising a parsing error in your server. Depending on your particular test setup, this might manifest in different ways, but as long as your tests are at all meaningful they at least shouldn't pass.
+
+## Configuration
+
 By default, Probity will validate the `application/xml` and `application/json` content types, and **raise** if it sees anything else. If you're serving something other than those two, such as html, you'll probably want to do
 
 ```ruby
@@ -45,7 +49,7 @@ end
 You can also override the default validators the same way:
 
 ```ruby
-Probity.validators['application/xml'] = # Object That Responds To .call(str)
+Probity.validators['application/xml'] = # Object that responds to .call(str)
 ```
 
 ## Validators
