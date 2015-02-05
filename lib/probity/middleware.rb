@@ -11,11 +11,33 @@ module Probity
       status, headers, response = @app.call(env)
       validator = Probity.validators[response.content_type]
       if validator
-        validator.call(response.body)
+        validate(response.body, validator)
       else
         missing_validator(response.content_type)
       end
       [status, headers, response]
+    end
+
+    def validate(body, validator)
+      if blank_string?(body)
+        blank_body(body, validator)
+      else
+        validator.call(body)
+      end
+    end
+
+    def blank_string?(str)
+      ! str[/\S/]
+    end
+
+    def blank_body(body, validator)
+      case @options[:blank_body]
+      when nil, :validate
+        validator.call(body)
+      when :raise
+        raise 'Response with an empty body'
+      when :ignore
+      end
     end
 
     def missing_validator(content_type)

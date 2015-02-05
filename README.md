@@ -39,6 +39,12 @@ middleware.use(Probity::ResponseValidatorMiddleware, missing_validator: :warn)
 middleware.use(Probity::ResponseValidatorMiddleware, missing_validator: :ignore)
 ```
 
+A blank body is not valid JSON or XML. If you would like to special-case this as an allowable response, use
+
+```ruby
+middleware.use(Probity::ResponseValidatorMiddleware, blank_body: :ignore)
+```
+
 You can add validators for your content types with code like this:
 
 ```ruby
