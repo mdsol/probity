@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'probity'
   spec.version       = Probity::VERSION
   spec.authors       = ['Aaron Weiner', 'Curtis White']
-  spec.email         = s.authors.map{|name|name.sub(/(.).* (.*)/,'\1\2@mdsol.com')}
+  spec.email         = spec.authors.map{|name|name.sub(/(.).* (.*)/,'\1\2@mdsol.com')}
   spec.summary       = %q{Rack middleware to test whether your app is producing valid json, xml, etc.}
   spec.description   = %q{Even Rails can't be trusted not to produce malformed xml sometimes. Add this Rack middleware to the stack while you run your tests and it will monitor the responses you send, infer the appropriate validations based on content type, and raise if they fail.}
   spec.homepage      = 'https://github.com/mdsol/probity'
