@@ -9,9 +9,11 @@ module Probity
 
     def call(env)
       status, headers, response = @app.call(env)
-      validator = Probity.validators[response.content_type]
+      content_type = response.respond_to?(:content_type) ? response.content_type : headers["Content-Type"]
+      validator = Probity.validators[content_type]
       if validator
-        validate(response.body, validator)
+        body = response.respond_to?(:body) ? response.body : response.join("")
+        validate(body, validator)
       else
         missing_validator(response.content_type)
       end
