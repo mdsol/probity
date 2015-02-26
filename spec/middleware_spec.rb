@@ -85,6 +85,26 @@ describe(Probity::ResponseValidatorMiddleware) do
 
     end
 
+    context "with an array of json strings as the body" do
+      before do
+        @body = [
+          JSON.pretty_generate( {'errors' => {'authentication' => ['Unauthorized']}} ),
+          JSON.pretty_generate( {'warning' => "warning"} )
+        ]
+
+        allow(@response).to receive(:content_type).and_return('application/json')
+        allow(@response).to receive(:body).and_return(@body)
+        allow(@inner_app).to receive(:call).and_return([401, {'Content-Type' => 'application/json'}, @body])
+      end
+
+      it 'validates the joined json strings by default' do
+        expect(Probity.validators['application/json']).to receive(:call).with(@body.join(""))
+        app = described_class.new(@inner_app)
+        app.call({})
+      end
+
+    end
+
   end
 
 end
