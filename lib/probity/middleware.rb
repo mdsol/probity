@@ -15,7 +15,7 @@ module Probity
         body = response.respond_to?(:body) ? response.body : response.join("")
         validate(body, validator)
       else
-        missing_validator(response.content_type)
+        missing_validator(content_type)
       end
       [status, headers, response]
     end
